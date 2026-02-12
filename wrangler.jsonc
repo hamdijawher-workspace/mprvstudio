@@ -1,7 +1,10 @@
 {
   "name": "mprvstudio",
   "compatibility_date": "2026-02-12",
+  "main": "./worker.mjs",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": "."
+    "directory": "./public",
+    "binding": "ASSETS"
   }
 }

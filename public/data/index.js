@@ -12,6 +12,15 @@ export const STORAGE_KEYS = Object.freeze({
   creatorPicksOverride: "mprv_admin_creator_picks"
 });
 
+const REMOTE_KEYS = Object.freeze({
+  [STORAGE_KEYS.weeklyConfigOverride]: "weeklyConfigOverride",
+  [STORAGE_KEYS.productOverrides]: "productOverrides",
+  [STORAGE_KEYS.creatorPicksOverride]: "creatorPicksOverride"
+});
+
+let remoteOverridesLoaded = false;
+let remoteOverrides = null;
+
 const PRODUCT_OVERRIDE_FIELDS = [
   "title",
   "brand",
@@ -50,7 +59,44 @@ function getStorage() {
   return window.localStorage;
 }
 
+async function loadRemoteOverrides() {
+  if (remoteOverridesLoaded) {
+    return;
+  }
+  remoteOverridesLoaded = true;
+  if (typeof window === "undefined" || typeof fetch === "undefined") {
+    return;
+  }
+  try {
+    const response = await fetch("/api/state", { cache: "no-store" });
+    if (!response.ok) {
+      return;
+    }
+    const data = await response.json();
+    if (!data || typeof data !== "object") {
+      return;
+    }
+    remoteOverrides = data;
+  } catch {
+    // ignore; fall back to localStorage (dev) or base data.
+  }
+}
+
 function readStoredJson(key) {
+  const remoteKey = REMOTE_KEYS[key];
+  if (remoteKey && remoteOverrides && typeof remoteOverrides === "object") {
+    const value = remoteOverrides[remoteKey];
+    if (value && typeof value === "object") {
+      return value;
+    }
+    if (Array.isArray(value)) {
+      return value;
+    }
+    if (value === null) {
+      return null;
+    }
+  }
+
   const storage = getStorage();
   if (!storage) {
     return null;
@@ -170,6 +216,10 @@ export async function loadData() {
   if (loaded) {
     return;
   }
+
+  // Try to load shared production overrides first (falls back gracefully).
+  await loadRemoteOverrides();
+
   const weeklyUrl = new URL("./weekly-config.json", import.meta.url);
   const response = await fetch(weeklyUrl);
   if (!response.ok) {

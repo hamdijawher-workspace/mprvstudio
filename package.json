@@ -5,6 +5,6 @@
   "type": "module",
   "scripts": {
     "start:secure": "node server.mjs",
-    "check:node": "node --check script.js && node --check data/index.js && node --check admin/admin.js && node --check out/out.js && node --check scripts/rotateWeekly.mjs && node --check server.mjs"
+    "check:node": "node --check public/script.js && node --check public/data/index.js && node --check public/admin/admin.js && node --check public/out/out.js && node --check scripts/rotateWeekly.mjs && node --check server.mjs && node --check worker.mjs"
   }
 }

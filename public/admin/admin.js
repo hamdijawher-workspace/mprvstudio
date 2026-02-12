@@ -9,6 +9,8 @@ import {
   STORAGE_KEYS
 } from "../data/index.js";
 
+const API_STATE_URL = "/api/state";
+
 const MAX_WEEKLY_PICKS = 12;
 const MAX_CREATOR_PICKS = 12;
 const MAX_VISIBLE_CREATORS = 3;
@@ -62,6 +64,68 @@ function readStoredJson(key, fallback = null) {
 
 function writeStoredJson(key, value) {
   window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+async function fetchRemoteState() {
+  const fallback = {
+    weeklyConfigOverride: null,
+    productOverrides: {},
+    creatorPicksOverride: []
+  };
+  try {
+    const response = await fetch(API_STATE_URL, { cache: "no-store" });
+    if (!response.ok) {
+      return fallback;
+    }
+    const data = await response.json();
+    if (!data || typeof data !== "object") {
+      return fallback;
+    }
+    return {
+      weeklyConfigOverride: data.weeklyConfigOverride ?? null,
+      productOverrides: data.productOverrides && typeof data.productOverrides === "object" ? data.productOverrides : {},
+      creatorPicksOverride: Array.isArray(data.creatorPicksOverride) ? data.creatorPicksOverride : []
+    };
+  } catch {
+    return fallback;
+  }
+}
+
+async function putRemoteState(payload) {
+  const response = await fetch(API_STATE_URL, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) {
+    const text = await response.text().catch(() => "");
+    const detail = text ? ` ${text}` : "";
+    throw new Error(`Save failed (${response.status}).${detail}`);
+  }
+  return response.json().catch(() => ({}));
+}
+
+function buildRemotePayload() {
+  return {
+    weeklyConfigOverride: state.weeklyConfig,
+    productOverrides: state.productOverrides || {},
+    creatorPicksOverride: getCreatorOverridesArray()
+  };
+}
+
+async function persistToRemote(statusNode, successMessage) {
+  try {
+    await putRemoteState(buildRemotePayload());
+    setStatus(statusNode, successMessage);
+  } catch (error) {
+    setStatus(
+      statusNode,
+      `${error.message || "Save failed."} (Make sure ADMIN_USER/ADMIN_PASS are set in Cloudflare and you are logged into /admin/ via the browser prompt.)`,
+      true
+    );
+  }
 }
 
 function uniq(values) {
@@ -635,7 +699,7 @@ function saveProductOverride() {
   }
 
   writeStoredJson(STORAGE_KEYS.productOverrides, state.productOverrides);
-  setStatus(dom.productStatus, "Product override saved. Refresh main site tab to apply.");
+  void persistToRemote(dom.productStatus, "Product override saved to production.");
   renderProductSelect(productId);
   renderWeeklyPicker();
   renderSponsorPicker();
@@ -652,7 +716,7 @@ function resetProductOverride() {
     writeStoredJson(STORAGE_KEYS.productOverrides, state.productOverrides);
   }
   loadProductForm(productId);
-  setStatus(dom.productStatus, "Product override removed.");
+  void persistToRemote(dom.productStatus, "Product override removed from production.");
   renderWeeklyPicker();
   renderSponsorPicker();
   renderCreatorPicker();
@@ -694,7 +758,7 @@ function saveWeeklyOverride() {
 
   writeStoredJson(STORAGE_KEYS.weeklyConfigOverride, nextConfig);
   state.weeklyConfig = nextConfig;
-  setStatus(dom.weeklyStatus, "Weekly picks saved. Refresh main site tab to apply.");
+  void persistToRemote(dom.weeklyStatus, "Weekly picks saved to production.");
 }
 
 function clearWeeklyOverride() {
@@ -704,7 +768,7 @@ function clearWeeklyOverride() {
   dom.weekLabel.value = state.weeklyConfig.currentWeekLabel || "";
   loadSponsorForm();
   renderWeeklyPicker();
-  setStatus(dom.weeklyStatus, "Weekly override cleared. Reloading admin to sync base data.");
+  void persistToRemote(dom.weeklyStatus, "Weekly override cleared in production.");
   window.setTimeout(() => window.location.reload(), 450);
 }
 
@@ -734,7 +798,7 @@ function saveSponsorOverride() {
 
   writeStoredJson(STORAGE_KEYS.weeklyConfigOverride, nextConfig);
   state.weeklyConfig = nextConfig;
-  setStatus(dom.sponsorStatus, sponsor ? "Sponsor saved." : "Sponsor disabled.");
+  void persistToRemote(dom.sponsorStatus, sponsor ? "Sponsor saved to production." : "Sponsor disabled in production.");
   updateSponsorCount();
 }
 
@@ -762,7 +826,7 @@ function clearSponsorOverride() {
     dom.sponsorCopy.value = "";
   }
   renderSponsorPicker();
-  setStatus(dom.sponsorStatus, "Sponsor cleared.");
+  void persistToRemote(dom.sponsorStatus, "Sponsor cleared in production.");
 }
 
 function updateCreatorVisibilityOverride(creatorId, isVisible) {
@@ -843,7 +907,7 @@ function saveCreatorOverride() {
   persistCreatorOverrides();
   renderCreatorVisibilityList();
   renderCreatorSelect(creatorId);
-  setStatus(dom.creatorStatus, "Creator settings saved. Refresh main site tab to apply.");
+  void persistToRemote(dom.creatorStatus, "Creator settings saved to production.");
 }
 
 function clearCreatorOverride() {
@@ -857,7 +921,7 @@ function clearCreatorOverride() {
   }
   renderCreatorVisibilityList();
   renderCreatorSelect(creatorId);
-  setStatus(dom.creatorStatus, "Creator override removed.");
+  void persistToRemote(dom.creatorStatus, "Creator override removed from production.");
 }
 
 async function handleImageUpload(fileInput, textInput, previewNode, statusNode, label) {
@@ -908,7 +972,7 @@ function clearAllOverrides() {
   state.weeklyConfig = deepClone(state.sourceWeeklyConfig);
   state.featuredSelection = new Set(state.weeklyConfig.featuredProductIds || []);
 
-  setStatus(dom.weeklyStatus, "All overrides cleared. Reloading admin.");
+  void persistToRemote(dom.weeklyStatus, "All overrides cleared in production. Reloading admin.");
   window.setTimeout(() => window.location.reload(), 450);
 }
 
@@ -962,20 +1026,23 @@ async function initialize() {
 
   await loadData();
 
+  // Prefer shared production state for the editor (falls back to local storage).
+  const remote = await fetchRemoteState();
+
   state.categories = getCategories();
   state.baseProducts = getGeneratedProductsSnapshot();
   state.baseById = new Map(state.baseProducts.map((product) => [product.id, product]));
 
   state.sourceWeeklyConfig = getBaseWeeklyConfigSnapshot();
   state.weeklyConfig = getWeeklyConfigSnapshot();
-  state.productOverrides = readStoredJson(STORAGE_KEYS.productOverrides, {}) || {};
+  state.productOverrides = remote.productOverrides || readStoredJson(STORAGE_KEYS.productOverrides, {}) || {};
   state.featuredSelection = new Set(state.weeklyConfig.featuredProductIds || []);
 
   const baseCreators = getBaseCreatorPicksSnapshot();
   const effectiveCreators = getCreatorPicksSnapshot();
   state.sourceCreators = baseCreators.length ? baseCreators : effectiveCreators;
   state.baseCreatorById = new Map(state.sourceCreators.map((creator) => [creator.id, normalizeCreatorProfile(creator)]));
-  state.creatorOverrides = parseCreatorOverrides(readStoredJson(STORAGE_KEYS.creatorPicksOverride, []));
+  state.creatorOverrides = parseCreatorOverrides(remote.creatorPicksOverride || readStoredJson(STORAGE_KEYS.creatorPicksOverride, []));
 
   if (dom.weekLabel) {
     dom.weekLabel.value = state.weeklyConfig.currentWeekLabel || "";

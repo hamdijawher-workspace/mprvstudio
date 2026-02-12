@@ -5,9 +5,10 @@ import { extname, join, normalize } from "node:path";
 
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 4333);
-const ROOT = process.cwd();
-const ADMIN_USER = process.env.ADMIN_USER || "HAMDIJAWHER";
-const ADMIN_PASS = process.env.ADMIN_PASS || "Lifechanging2023@";
+// Local-only secure server. Production is on Cloudflare Workers; do not hardcode secrets.
+const ROOT = join(process.cwd(), "public");
+const ADMIN_USER = process.env.ADMIN_USER || "";
+const ADMIN_PASS = process.env.ADMIN_PASS || "";
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -52,6 +53,9 @@ function parseBasicAuth(header) {
 }
 
 function isAdminAuthorized(req) {
+  if (!ADMIN_USER || !ADMIN_PASS) {
+    return false;
+  }
   const creds = parseBasicAuth(req.headers.authorization);
   if (!creds) {
     return false;
