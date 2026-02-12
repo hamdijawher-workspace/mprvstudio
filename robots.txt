@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://YOUR_DOMAIN/sitemap.xml
+Sitemap: https://mprvstudio.hamdijawher.workers.dev/sitemap.xml
