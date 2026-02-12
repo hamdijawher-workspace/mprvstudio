@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MPRV Admin</title>
+  <meta name="description" content="MPRV STUDIO local admin editor">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=20260213m">
+  <link rel="stylesheet" href="./admin.css?v=20260213m">
+  <script type="module" defer src="./admin.js?v=20260213m"></script>
+</head>
+<body>
+  <div class="disclosure-strip">Admin access is protected by server authentication.</div>
+
+  <header class="site-header admin-header">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark">MPRV</span>
+      <span class="brand-name">ADMIN</span>
+    </a>
+    <nav class="site-nav is-open admin-nav">
+      <a class="nav-btn" href="../index.html">Back To Site</a>
+    </nav>
+  </header>
+
+  <main class="main-shell admin-shell">
+    <section class="admin-panel" id="admin-editor-panel">
+      <div class="block-head">
+        <h1>Catalog Editor</h1>
+      </div>
+      <p class="muted">Keep using checklist workflow. Save updates, then refresh the main site tab.</p>
+
+      <article class="legal-card admin-card">
+        <div class="block-head admin-subhead">
+          <h2>Weekly Rotation</h2>
+          <span class="pill" id="admin-featured-count">0/12 selected</span>
+        </div>
+        <div class="controls admin-controls">
+          <label class="control">
+            Week label
+            <input id="admin-week-label" type="date" required>
+          </label>
+          <label class="control grow">
+            Filter products
+            <input id="admin-featured-search" type="search" placeholder="Search by title or brand">
+          </label>
+        </div>
+        <div class="admin-picker" id="admin-featured-picker"></div>
+        <div class="admin-actions">
+          <button class="cta" id="admin-save-weekly-btn" type="button">Save Weekly Picks</button>
+          <button class="cta cta-soft" id="admin-clear-weekly-btn" type="button">Clear Weekly Override</button>
+        </div>
+        <p class="form-status" id="admin-weekly-status"></p>
+      </article>
+
+      <article class="legal-card admin-card">
+        <div class="block-head admin-subhead">
+          <h2>Sponsor</h2>
+          <span class="pill" id="admin-sponsor-count">0/1 selected</span>
+        </div>
+        <div class="controls admin-controls">
+          <label class="control">
+            Enabled
+            <select id="admin-sponsor-enabled">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </label>
+          <label class="control">
+            Label
+            <input id="admin-sponsor-label" type="text" placeholder="Sponsored">
+          </label>
+          <label class="control grow">
+            Title
+            <input id="admin-sponsor-title" type="text" placeholder="Feature title">
+          </label>
+          <label class="control grow">
+            URL
+            <input id="admin-sponsor-url" type="url" placeholder="https://...">
+          </label>
+        </div>
+        <label>
+          Sponsor copy
+          <textarea id="admin-sponsor-copy" rows="3" placeholder="Short sponsor description"></textarea>
+        </label>
+        <label>
+          Filter sponsor products
+          <input id="admin-sponsor-search" type="search" placeholder="Search by title or brand">
+        </label>
+        <div class="admin-picker" id="admin-sponsor-picker"></div>
+        <div class="admin-actions">
+          <button class="cta" id="admin-save-sponsor-btn" type="button">Save Sponsor</button>
+          <button class="cta cta-soft" id="admin-clear-sponsor-btn" type="button">Clear Sponsor</button>
+        </div>
+        <p class="form-status" id="admin-sponsor-status"></p>
+      </article>
+
+      <article class="legal-card admin-card">
+        <div class="block-head admin-subhead">
+          <h2>Creator Editor</h2>
+          <span class="pill" id="admin-visible-creator-count">0/3 visible</span>
+        </div>
+        <h3 class="admin-minor">Visible Creators (checkbox list)</h3>
+        <div class="admin-visibility-list" id="admin-creator-visibility"></div>
+
+        <div class="controls admin-controls">
+          <label class="control grow">
+            Edit creator
+            <select id="admin-creator-select"></select>
+          </label>
+          <label class="control grow">
+            Name
+            <input id="admin-creator-name" type="text" required>
+          </label>
+          <label class="control grow">
+            Role
+            <input id="admin-creator-role" type="text" required>
+          </label>
+        </div>
+        <div class="controls admin-controls">
+          <label class="control grow">
+            Avatar URL
+            <input id="admin-creator-avatar" type="text" placeholder="https://... or data:image/...">
+          </label>
+          <label class="control">
+            Upload avatar image
+            <input id="admin-creator-avatar-file" type="file" accept="image/*">
+          </label>
+          <label class="control grow">
+            Filter creator products
+            <input id="admin-creator-search" type="search" placeholder="Search by title or brand">
+          </label>
+        </div>
+        <label>
+          Bio
+          <textarea id="admin-creator-bio" rows="3"></textarea>
+        </label>
+        <img class="admin-image-preview" id="admin-creator-avatar-preview" alt="Creator avatar preview">
+        <div class="block-head admin-subhead">
+          <h3>Creators</h3>
+          <span class="pill" id="admin-creator-count">0/12 selected</span>
+        </div>
+        <div class="admin-picker" id="admin-creator-picker"></div>
+        <div class="admin-actions">
+          <button class="cta" id="admin-save-creator-btn" type="button">Save Creator Settings</button>
+          <button class="cta cta-soft" id="admin-clear-creator-btn" type="button">Clear Creator Override</button>
+        </div>
+        <p class="form-status" id="admin-creator-status"></p>
+      </article>
+
+      <article class="legal-card admin-card">
+        <div class="block-head admin-subhead">
+          <h2>Product Editor</h2>
+        </div>
+        <div class="controls admin-controls">
+          <label class="control grow">
+            Product
+            <select id="admin-product-select"></select>
+          </label>
+        </div>
+        <form class="form-card admin-product-form" id="admin-product-form">
+          <label>
+            Title
+            <input id="admin-product-title" type="text" required>
+          </label>
+          <label>
+            Brand
+            <input id="admin-product-brand" type="text" required>
+          </label>
+          <label>
+            Price
+            <input id="admin-product-price" type="text" required>
+          </label>
+          <label>
+            Image URL
+            <input id="admin-product-image-url" type="text" required>
+          </label>
+          <label>
+            Upload image file
+            <input id="admin-product-image-file" type="file" accept="image/*">
+          </label>
+          <img class="admin-image-preview" id="admin-product-image-preview" alt="Product image preview">
+          <label>
+            Source platform
+            <input id="admin-product-source-platform" type="text" required>
+          </label>
+          <label>
+            Affiliate URL
+            <input id="admin-product-affiliate-url" type="url" required>
+          </label>
+          <label>
+            Short description
+            <textarea id="admin-product-description" rows="4" required></textarea>
+          </label>
+          <div class="admin-actions">
+            <button class="cta" type="submit">Save Product Override</button>
+            <button class="cta cta-soft" id="admin-reset-product-btn" type="button">Reset Product Override</button>
+          </div>
+          <p class="form-status" id="admin-product-status"></p>
+        </form>
+      </article>
+
+      <article class="legal-card admin-card">
+        <div class="block-head admin-subhead">
+          <h2>Maintenance</h2>
+        </div>
+        <div class="admin-actions">
+          <button class="cta cta-soft" id="admin-export-btn" type="button">Export Overrides JSON</button>
+          <button class="cta cta-soft" id="admin-clear-all-btn" type="button">Clear All Overrides</button>
+        </div>
+        <p class="muted small">Clearing overrides restores values from the base data files after reload.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

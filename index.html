@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MPRV STUDIO</title>
+  <meta name="description" content="Fewer, Better Purchases. Curated products. Weekly rotation. No decision fatigue.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260213m">
+  <script type="module" defer src="script.js?v=20260213m"></script>
+</head>
+<body>
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <div class="disclosure-strip">
+    We may earn commissions from qualifying purchases. We do not sell or ship products directly.
+  </div>
+
+  <header class="site-header" id="site-header">
+    <a href="#discover" class="brand" data-view="discover">
+      <span class="brand-mark">MPRV</span>
+      <span class="brand-name">STUDIO</span>
+    </a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">Menu</button>
+    <nav class="site-nav" id="site-nav">
+      <button data-view="discover" class="nav-btn is-active">Discover</button>
+      <button data-view="weekly" class="nav-btn" id="weekly-nav-btn">Weekly</button>
+      <button data-view="archive" class="nav-btn">Archive</button>
+      <details class="nav-dropdown">
+        <summary>Categories</summary>
+        <div class="dropdown-menu" id="category-menu"></div>
+      </details>
+      <button data-view="packs" class="nav-btn">Packs</button>
+      <button data-view="global" class="nav-btn">Creators</button>
+      <button data-view="club" class="nav-btn">Club</button>
+      <button data-view="concierge" class="nav-btn">Concierge</button>
+    </nav>
+  </header>
+  <button class="theme-dot" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode" data-tooltip="Switch to dark mode"></button>
+
+  <main class="main-shell" id="app">
+    <section class="view is-active" data-view="discover" id="view-discover">
+      <div class="hero">
+        <p class="kicker">Decision fatigue, removed.</p>
+        <h1>Fewer, Better Purchases</h1>
+        <p class="hero-copy">Curated products. Weekly rotation. No decision fatigue.</p>
+        <div class="hero-actions">
+          <button data-view="weekly" class="cta">See This Week</button>
+          <button data-view="club" class="cta cta-soft">Join Club ($2/week)</button>
+        </div>
+        <form class="hero-newsletter" id="hero-newsletter-form">
+          <label for="hero-newsletter-email">Get the weekly shortlist</label>
+          <div class="hero-newsletter-row">
+            <input id="hero-newsletter-email" type="email" placeholder="you@example.com" required>
+            <button class="cta" type="submit">Subscribe</button>
+          </div>
+          <p class="hero-newsletter-status" id="hero-newsletter-status"></p>
+        </form>
+        <div class="hero-social">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://x.com" target="_blank" rel="noopener">X</a>
+        </div>
+        <div class="hero-art" aria-hidden="true"></div>
+      </div>
+      <section class="intent-strip">
+        <p class="intent-strip-note">Pick your path, then jump straight into the right shortlist.</p>
+        <div class="hero-chip-row">
+          <span class="hero-chip-label">Which are you?</span>
+          <button class="hero-chip" data-view="weekly">Browse this week's 12 picks</button>
+          <button class="hero-chip" data-view="packs">Get a finished setup</button>
+          <button class="hero-chip" data-view="club">I only need advice</button>
+          <button class="hero-chip" data-view="concierge">Do it for me</button>
+        </div>
+        <div class="hero-chip-row">
+          <span class="hero-chip-label">Start with</span>
+          <button class="hero-chip" data-view="categories" data-category="tech">Desk</button>
+          <button class="hero-chip" data-view="categories" data-category="fitness">Gym bag</button>
+          <button class="hero-chip" data-view="categories" data-category="home-decor">Apartment</button>
+          <button class="hero-chip" data-view="categories" data-category="phone-cases">Phone</button>
+          <button class="hero-chip" data-view="categories" data-category="watches">Watches</button>
+        </div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2 id="discover-weekly-title">Weekly · Feb 10-16 · 12 picks</h2>
+          <button class="share-btn" data-share-context="discover_weekly">Share</button>
+        </div>
+        <div class="product-grid" id="discover-weekly-grid"></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>Packs Preview</h2>
+          <button class="share-btn" data-share-context="discover_packs">Share</button>
+        </div>
+        <div class="pack-grid" id="discover-pack-grid"></div>
+      </section>
+
+      <section class="block">
+        <article class="creator-spotlight" id="discover-global-promo"></article>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>Club</h2>
+        </div>
+        <article class="club-teaser">
+          <div class="club-teaser-top">
+            <span class="club-teaser-icon" aria-hidden="true">◎</span>
+            <div>
+              <p class="club-kicker">Membership</p>
+              <h3>Built for people who want fewer, better decisions.</h3>
+            </div>
+          </div>
+          <p class="club-copy">Join a focused advisory channel with weekly guidance, setup critique, and member-led priority drops.</p>
+          <div class="club-points">
+            <span>Weekly live office hour</span>
+            <span>Priority suggestions</span>
+            <span>Member voting</span>
+          </div>
+          <div class="club-actions">
+            <button class="cta club-join-strong" id="home-club-join-btn" type="button">Join Club</button>
+            <small>$2/week pilot pricing. Cancel anytime.</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>Guides</h2>
+        </div>
+        <div class="guide-grid" id="guide-grid"></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>Featured Collections</h2>
+        </div>
+        <div class="guide-grid" id="collection-grid"></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>Brands Index</h2>
+        </div>
+        <div class="profile-row" id="brand-grid"></div>
+      </section>
+    </section>
+
+    <section class="view" data-view="weekly" id="view-weekly">
+      <div class="block-head">
+        <h2 id="weekly-title">Best Picks</h2>
+        <button class="share-btn" data-share-context="weekly">Share</button>
+      </div>
+      <p class="muted">Current week is promoted. Archive is available but collapsed by default.</p>
+      <article class="sponsor-slot" id="sponsor-slot"></article>
+      <div class="product-grid" id="weekly-grid"></div>
+      <details class="archive">
+        <summary>Weekly Archive</summary>
+        <div class="archive-wrap" id="weekly-archive-wrap"></div>
+      </details>
+    </section>
+
+    <section class="view" data-view="archive" id="view-archive">
+      <div class="block-head">
+        <h2>Archive</h2>
+        <button class="share-btn" data-share-context="archive">Share</button>
+      </div>
+      <p class="muted">Live products not featured this week, grouped by week label.</p>
+      <div class="archive-wrap" id="archive-week-wrap"></div>
+    </section>
+
+    <section class="view" data-view="categories" id="view-categories">
+      <div class="block-head">
+        <h2>Essentials Shelf</h2>
+        <span class="pill" id="category-count-pill">12 Essentials in Grooming.</span>
+      </div>
+      <p class="caps-inline" id="category-live-count">108 Essentials live · 9 categories</p>
+      <div class="controls">
+        <label class="control">
+          Category
+          <select id="category-select"></select>
+        </label>
+        <label class="control grow">
+          Search within shelf
+          <input id="search-input" type="search" placeholder="Search Essentials">
+        </label>
+      </div>
+      <div class="search-suggest" id="search-suggest"></div>
+      <div class="product-grid" id="category-grid"></div>
+    </section>
+
+    <section class="view" data-view="packs" id="view-packs">
+      <div class="block-head">
+        <h2>Packs</h2>
+        <button class="share-btn" data-share-context="packs">Share</button>
+      </div>
+      <p class="muted">Each pack references Essentials only and uses one budget range.</p>
+      <div class="pack-grid" id="pack-grid"></div>
+    </section>
+
+    <section class="view" data-view="global" id="view-global">
+      <div class="block-head">
+        <h2>Creators</h2>
+      </div>
+      <p class="muted">Each curator can publish up to 12 picks at once.</p>
+      <div class="profile-row" id="global-profile-row"></div>
+      <article class="legal-card" id="global-profile-card"></article>
+      <div class="product-grid" id="global-picks-grid"></div>
+    </section>
+
+    <section class="view" data-view="newsletter" id="view-newsletter">
+      <div class="block-head">
+        <h2>Newsletter</h2>
+      </div>
+      <p class="muted">Weekly shortlist plus optional midweek drop. Choose 1-3 categories.</p>
+      <form class="form-card" id="newsletter-form">
+        <label>
+          Email
+          <input type="email" id="newsletter-email" required placeholder="you@example.com">
+        </label>
+        <fieldset id="newsletter-segments">
+          <legend>Pick up to 3 interests</legend>
+        </fieldset>
+        <button class="cta" type="submit">Subscribe</button>
+        <p class="form-status" id="newsletter-status"></p>
+      </form>
+    </section>
+
+    <section class="view" data-view="club" id="view-club">
+      <div class="block-head">
+        <h2>Club</h2>
+      </div>
+      <div class="club-layout">
+        <article class="pricing-card club-main">
+          <p class="club-plan-kicker">MPRV Club</p>
+          <p class="price">$2<span>/week</span></p>
+          <p class="club-plan-copy">For people who want weekly direction without endless tabs and second-guessing.</p>
+          <ul class="club-feature-list">
+            <li>Discord-gated community</li>
+            <li>Monthly live session</li>
+            <li>Member voting and suggestion pipeline</li>
+            <li>Welcome onboarding flow</li>
+            <li>Auto role removal on cancellation</li>
+          </ul>
+          <div class="club-plan-meta">
+            <span>Cancel anytime</span>
+            <span>Weekly drop updates</span>
+          </div>
+          <button class="cta" id="club-start-btn">Start Checkout</button>
+        </article>
+        <aside class="legal-card club-side">
+          <h3>How It Works</h3>
+          <ol class="club-steps">
+            <li>Join with your email and name.</li>
+            <li>Receive onboarding and community access.</li>
+            <li>Vote on upcoming picks and join monthly sessions.</li>
+          </ol>
+          <p class="muted small no-margin">Membership is weekly, managed online, and can be canceled any time.</p>
+        </aside>
+      </div>
+      <form class="form-card hidden" id="club-checkout-form">
+        <label>
+          Email
+          <input type="email" id="club-email" required placeholder="member@example.com">
+        </label>
+        <label>
+          Full name
+          <input type="text" id="club-name" required placeholder="Your name">
+        </label>
+        <button class="cta" type="submit">Complete Membership</button>
+        <p class="form-status" id="club-status"></p>
+      </form>
+      <article class="legal-card">
+        <h3>Membership Comparison</h3>
+        <table class="club-compare">
+          <thead>
+            <tr>
+              <th>Access</th>
+              <th>Free visitor</th>
+              <th>Club member</th>
+              <th>Concierge client</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Weekly picks</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Direct advisory support</td>
+              <td>No</td>
+              <td>Weekly live + community</td>
+              <td>1:1 done-for-you</td>
+            </tr>
+            <tr>
+              <td>Procurement help</td>
+              <td>No</td>
+              <td>Recommendations only</td>
+              <td>Handled with you</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="view" data-view="concierge" id="view-concierge">
+      <div class="block-head">
+        <h2>Concierge Procurement</h2>
+      </div>
+      <div class="tier-grid">
+        <article class="tier-card">
+          <h3>Blueprint</h3>
+          <p>$99</p>
+          <small>1 live session + plan</small>
+        </article>
+        <article class="tier-card">
+          <h3>Procurement</h3>
+          <p>$199 + product costs</p>
+          <small>You approve list before purchasing</small>
+        </article>
+        <article class="tier-card">
+          <h3>Full Setup</h3>
+          <p>$499+</p>
+          <small>Multi-room/kit planning and coordination</small>
+        </article>
+      </div>
+
+      <article class="legal-card">
+        <h3>Pilot Operating Constraints</h3>
+        <p>
+          First 90 days run in one geography only, with 8-15 SKUs per client, fixed delivery SLA, and explicit
+          returns policy.
+        </p>
+      </article>
+
+      <form class="form-card" id="concierge-form">
+        <label>
+          Name
+          <input type="text" id="concierge-name" required placeholder="Your name">
+        </label>
+        <label>
+          Email
+          <input type="email" id="concierge-email" required placeholder="you@example.com">
+        </label>
+        <label>
+          Tier
+          <select id="concierge-tier" required>
+            <option value="Blueprint">$99 Blueprint</option>
+            <option value="Procurement">$199 Procurement</option>
+            <option value="Full Setup">$499+ Full Setup</option>
+          </select>
+        </label>
+        <label>
+          Geography (pilot)
+          <input type="text" id="concierge-geo" required placeholder="City / region">
+        </label>
+        <label>
+          Project brief
+          <textarea id="concierge-brief" rows="4" required placeholder="Tell us what you want upgraded."></textarea>
+        </label>
+        <button class="cta" type="submit">Submit Intake</button>
+        <p class="form-status" id="concierge-status"></p>
+      </form>
+    </section>
+
+    <section class="view" data-view="legal" id="view-legal">
+      <div class="block-head">
+        <h2>Legal & Disclosure</h2>
+      </div>
+      <article class="legal-card">
+        <h3>Affiliate Disclosure</h3>
+        <p>
+          MPRV STUDIO uses affiliate links. If you buy through some links, we may earn a commission at no
+          extra cost to you.
+        </p>
+        <p>As an Amazon Associate, we earn from qualifying purchases.</p>
+        <p>We do not sell, ship, warehouse, or fulfill products listed on this site.</p>
+      </article>
+      <article class="legal-card">
+        <h3>Sponsorship Policy</h3>
+        <p>
+          Sponsored placements are clearly labeled and capped to one slot per weekly list. Editorial picks are
+          selected independently.
+        </p>
+      </article>
+      <article class="legal-card">
+        <h3>Privacy & Terms</h3>
+        <p>
+          Newsletter and form submissions collect only required contact information for service delivery and
+          communications.
+        </p>
+      </article>
+    </section>
+
+    <section class="view" data-view="product" id="view-product">
+      <button class="text-link" id="product-back-btn" type="button">
+        <span aria-hidden="true">←</span>
+        <span>Back to products</span>
+      </button>
+      <article class="product-page-card">
+        <div class="product-page-media" id="product-page-media"></div>
+        <div class="product-page-content">
+          <div class="product-page-top">
+            <div class="brand-lockup">
+              <span class="brand-logo" id="product-brand-logo">M</span>
+              <div>
+                <p class="muted small no-margin">Brand</p>
+                <strong id="product-brand-text">MPRV</strong>
+              </div>
+            </div>
+            <span class="pill" id="product-category-pill">Category</span>
+          </div>
+          <h2 id="product-page-title">Product Name</h2>
+          <p class="product-page-price" id="product-page-price">$0</p>
+          <p class="product-page-description" id="product-page-description"></p>
+          <div class="product-page-actions">
+            <button class="cta" id="product-page-buy-btn" type="button">Buy It ↗</button>
+          </div>
+          <div class="decision-blocks">
+            <article class="decision-block">
+              <h3>Why we picked it</h3>
+              <p id="product-why-picked"></p>
+            </article>
+            <article class="decision-block">
+              <h3>Who it's for / Who it's not for</h3>
+              <p><strong>For:</strong> <span id="product-who-for"></span></p>
+              <p><strong>Not for:</strong> <span id="product-who-not-for"></span></p>
+            </article>
+          </div>
+          <p class="muted small">Affiliate links may generate commissions.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <button data-view="discover">About</button>
+    <a href="mailto:contact@mprvstudio.com">Contact</a>
+    <a href="admin/" target="_blank" rel="noopener">Admin</a>
+    <button data-view="legal">Legal/Disclosure</button>
+    <button data-view="legal">Privacy/Terms</button>
+  </footer>
+  <div class="cursor-ring is-hidden" id="cursor-ring" aria-hidden="true"></div>
+
+</body>
+</html>

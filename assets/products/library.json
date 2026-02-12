@@ -1,0 +1,12 @@
+{
+  "images": [
+    {
+      "label": "Example - Desk Setup",
+      "path": "/assets/products/example-desk.jpg"
+    },
+    {
+      "label": "Example - Gym Bag",
+      "path": "/assets/products/example-gym.jpg"
+    }
+  ]
+}

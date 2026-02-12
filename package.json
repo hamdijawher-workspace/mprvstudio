@@ -1,0 +1,10 @@
+{
+  "name": "mprvproject",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start:secure": "node server.mjs",
+    "check:node": "node --check script.js && node --check data/index.js && node --check admin/admin.js && node --check out/out.js && node --check scripts/rotateWeekly.mjs && node --check server.mjs"
+  }
+}

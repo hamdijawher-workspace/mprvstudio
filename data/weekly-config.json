@@ -1,0 +1,55 @@
+{
+  "currentWeekLabel": "2026-02-10",
+  "featuredProductIds": [
+    "grooming-01",
+    "grooming-06",
+    "tech-02",
+    "tech-07",
+    "fitness-03",
+    "fitness-11",
+    "food-02",
+    "food-09",
+    "home-decor-04",
+    "home-decor-10",
+    "phone-apps-01",
+    "phone-cases-08"
+  ],
+  "archiveByWeek": {
+    "2026-02-03": [
+      "grooming-02",
+      "tech-05",
+      "fitness-01",
+      "food-03",
+      "home-decor-01",
+      "phone-apps-04",
+      "phone-cases-02",
+      "clothes-04",
+      "watches-06",
+      "tech-10",
+      "fitness-08",
+      "food-12"
+    ],
+    "2026-01-27": [
+      "grooming-09",
+      "tech-03",
+      "fitness-06",
+      "food-04",
+      "home-decor-03",
+      "phone-apps-10",
+      "phone-cases-01",
+      "clothes-01",
+      "watches-11",
+      "tech-11",
+      "fitness-05",
+      "food-07"
+    ]
+  },
+  "hardArchivedProductIds": [],
+  "sponsor": {
+    "label": "Sponsored",
+    "title": "AER Commit Carry Set",
+    "copy": "One-bag office + gym setup selected for compact storage and daily durability.",
+    "url": "https://www.aersf.com/",
+    "productId": "tech-07"
+  }
+}
